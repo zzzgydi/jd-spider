@@ -40,12 +40,12 @@ def af_request(resp):  # 跨域处理
 
 
 if __name__ == '__main__':
-    # malls_class = [MallOne, MallTwo, MallThree, MallFour, MallFive]
-    malls_class = [MallFour, MallFive]
+    malls_class = [MallOne, MallTwo, MallThree, MallFour, MallFive]
+    # malls_class = [MallFour, MallFive]
     for mall in malls_class:
         mall_ins = mall(driver, auto_add=True, sleep_time=0.1)
-        result = mall_ins.run(limit=10)  # limit参数测试时使用
-        # result = mall_ins.run()
+        # result = mall_ins.run(limit=10)  # limit参数测试时使用
+        result = mall_ins.run()
         global_data.append(result)
     print("[INFO]: 正在关闭爬虫，开启服务器...")
     # WebDriver退出

@@ -97,16 +97,6 @@ class MallFour(JdMall):
         all_links = [item.get_attribute("href") for item in all_links]
         all_links = [item for item in all_links if item.find("item.jd.com") != -1]
         self.add_task_list(all_links)
-        # 再爬一下列表
-        url = "https://mall.jd.com/view_search-709952-0-99-1-24-1.html"
-        driver = self.driver
-        driver.get(url)
-        self.sleep(1)
-        css_select = 'div.J_LayoutArea a'
-        all_links = driver.find_elements_by_css_selector(css_select)
-        all_links = [item.get_attribute("href") for item in all_links]
-        all_links = [item for item in all_links if item.find("item.jd.com") != -1]
-        self.add_task_list(all_links)
 
 
 class MallFive(JdMall):
