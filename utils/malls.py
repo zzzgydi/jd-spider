@@ -49,7 +49,7 @@ class MallTwo(JdMall):
         url = "https://mall.jd.com/index-1000078305.html"
         driver = self.driver
         driver.get(url)
-        self.sleep(2)
+        self.sleep(1)
         # 把该页商品展示部分的链接全爬了
         all_links = driver.find_elements_by_css_selector("div.J_layoutBg a")
         all_links = [item.get_attribute("href") for item in all_links]
@@ -109,12 +109,12 @@ class MallFive(JdMall):
 
     def get_mall_urls(self):
         # 爬取的店的地址
-        url = "https://mall.jd.com/index-1000091721.html"
+        url = "https://mall.jd.com/index-1000147303.html"
         driver = self.driver
         driver.get(url)
         self.sleep(1)
         # 把该页商品展示部分的链接全爬了
-        all_links = driver.find_elements_by_css_selector("div.d-layout-row a")
+        all_links = driver.find_elements_by_css_selector("div.d-hotSpot a")
         all_links = [item.get_attribute("href") for item in all_links]
         all_links = [item for item in all_links if item.find("item.jd.com") != -1]
         self.add_task_list(all_links)

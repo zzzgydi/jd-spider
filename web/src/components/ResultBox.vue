@@ -22,6 +22,7 @@
             <td class="td-price">{{ row.cur_price }}</td>
             <td class="td-price">{{ row.old_price }}</td>
             <td class="td-price">{{ row.plus_price }}</td>
+            <td class="td-price">{{ row.fans_price }}</td>
             <td class="td-act">{{ row.activity_type }}</td>
             <td class="td-quan">
               <ul>
@@ -59,7 +60,7 @@ export default {
   },
   data() {
     return {
-      tableHead: "序号 商品名称 当前价格 原价格 Plus价格 活动类型 优惠券 促销 商品链接".split(" "),
+      tableHead: "序号 商品名称 当前价格 原价格 Plus价格 粉丝价格 活动类型 优惠券 促销 商品链接".split(" "),
       tableHtml: "",
       isShowData: true,
       isShowErr: false,
@@ -111,7 +112,7 @@ export default {
 <style lang="scss">
 .result-box {
   padding: 0 10px 15px;
-  width: 1100px;
+  width: 1150px;
   // background-color: red;
   font-size: 16px;
   margin: 0 auto 20px;
@@ -193,7 +194,7 @@ export default {
         }
 
         .td-price {
-          width: 70px;
+          width: 65px;
           font-size: 18px;
           text-align: center;
         }

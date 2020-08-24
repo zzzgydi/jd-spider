@@ -71,7 +71,7 @@ class JdMall(metaclass=ABCMeta):
         获取一个任务链接 —— 商品详情链接
         '''
         if len(self.all_urls) > 0:
-            return self.all_urls.pop()
+            return self.all_urls.pop(0)
         return None
 
     def filter_url(self, url: str) -> str:
@@ -101,23 +101,34 @@ class JdMall(metaclass=ABCMeta):
         # 等待页面加载完成
         wait_element = "span.p-price>span.price"
         self.wait_page_load(wait_element)
+        self.sleep()
 
         # 商品名称
         sku_name = driver.find_element_by_class_name('sku-name').text
         # 价格
         cur_price = driver.find_element_by_css_selector(wait_element).text
         try:
+            # 不是一家店的不要
+            mall_name = driver.find_element_by_css_selector('div.popbox-inner h3').text
+            if mall_name and mall_name != self.mall_name:
+                return None
+        except:
+            pass
+        try:
             # 旧的价格也可能没有
-            old_price = driver.find_element_by_css_selector(
-                "span.pricing>#page_origin_price").text[1:]
+            old_price = driver.find_element_by_css_selector("span.pricing>del").text[1:]
         except:
             old_price = ""
         try:
             # 获取plus价格
-            plus_price = driver.find_element_by_css_selector(
-                "span.p-price-plus>span.price").text[1:]
+            plus_price = driver.find_element_by_css_selector("div.plus-price span.price").text[1:]
         except:
             plus_price = ""
+        try:
+            # 获取粉丝价格
+            fans_price = driver.find_element_by_css_selector("div.fans-price span.price").text[1:]
+        except:
+            fans_price = ""
         try:
             # 活动名称
             activity_type = driver.find_element_by_css_selector("div.activity-type").text
@@ -157,7 +168,7 @@ class JdMall(metaclass=ABCMeta):
                 self.add_task_list(more_skus)
             except:
                 pass
-        return JdItem(url, sku_name, cur_price, old_price, plus_price, activity_type, quan_items,
+        return JdItem(url, sku_name, cur_price, old_price, plus_price, fans_price, activity_type, quan_items,
                       prom_items)
 
     def run(self, limit=float('inf')) -> dict:
@@ -175,11 +186,11 @@ class JdMall(metaclass=ABCMeta):
             err_list.append(err)
         a_url, idx = self.get_task(), 0
         while a_url and idx < limit:
-            self.sleep()
             try:
                 sku_item = self.get_sku_info(a_url)
-                # 可以将对象转成字典
-                item_list.append(sku_item.__dict__)
+                if sku_item:
+                    # 可以将对象转成字典
+                    item_list.append(sku_item.__dict__)
             except:
                 err = "解析地址异常:" + a_url
                 print("[Error]:", err)
